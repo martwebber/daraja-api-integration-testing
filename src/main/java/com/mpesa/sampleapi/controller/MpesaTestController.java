@@ -1,18 +1,17 @@
 package com.mpesa.sampleapi.controller;
 
+import com.mpesa.sampleapi.config.ConfigProperties;
 import com.mpesa.sampleapi.dto.StkPushApiRequest;
-import io.github.openpaydev.mpesa.backend.MpesaClient;
-import io.github.openpaydev.mpesa.backend.models.StkCallback;
-import io.github.openpaydev.mpesa.backend.models.StkPushRequest;
-import io.github.openpaydev.mpesa.backend.models.StkPushResponse;
-import io.github.openpaydev.mpesa.backend.models.StkStatusQueryResponse;
+import io.github.openpaydev.mpesa.MpesaClient;
+import io.github.openpaydev.mpesa.core.exceptions.MpesaException;
+import io.github.openpaydev.mpesa.core.models.StkCallback;
+import io.github.openpaydev.mpesa.core.models.StkPushRequest;
+import io.github.openpaydev.mpesa.core.models.StkPushResponse;
+import io.github.openpaydev.mpesa.core.models.StkStatusQueryResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.mpesa.sampleapi.config.ConfigProperties;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -29,7 +28,9 @@ public class MpesaTestController {
     }
 
     @PostMapping("/stkpush")
-    public ResponseEntity<StkPushResponse> stkPush(@RequestBody StkPushApiRequest apiRequest) throws IOException {
+    // CORRECTED: Throws the specific MpesaException and uses the clean class name for the response.
+    public ResponseEntity<StkPushResponse> stkPush(@RequestBody StkPushApiRequest apiRequest) throws MpesaException {
+        // CORRECTED: Removed the typo "StkPushRequest8".
         StkPushRequest request = StkPushRequest.newPayBillRequest(
                 apiRequest.getAmount(),
                 apiRequest.getPhone(),
@@ -43,6 +44,7 @@ public class MpesaTestController {
     }
 
     @PostMapping("/callback")
+    // CORRECTED: The StkCallback type is now correctly imported.
     public ResponseEntity<String> mpesaCallback(@RequestBody StkCallback stkCallback) {
         log.info("Received M-Pesa Callback: {}", stkCallback);
 
@@ -69,7 +71,8 @@ public class MpesaTestController {
     }
 
     @GetMapping("/status/{checkoutRequestID}")
-    public ResponseEntity<StkStatusQueryResponse> getTransactionStatus(@PathVariable String checkoutRequestID) throws IOException {
+    // CORRECTED: Throws the specific MpesaException.
+    public ResponseEntity<StkStatusQueryResponse> getTransactionStatus(@PathVariable String checkoutRequestID) throws MpesaException {
         StkStatusQueryResponse response = mpesaClient.queryStkStatus(checkoutRequestID);
         return ResponseEntity.ok(response);
     }

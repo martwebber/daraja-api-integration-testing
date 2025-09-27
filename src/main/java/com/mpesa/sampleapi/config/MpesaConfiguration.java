@@ -1,7 +1,7 @@
 package com.mpesa.sampleapi.config;
 
-import io.github.openpaydev.mpesa.backend.MpesaClient;
-import io.github.openpaydev.mpesa.backend.auth.MpesaTokenManager;
+import io.github.openpaydev.mpesa.MpesaClient;
+import io.github.openpaydev.mpesa.auth.MpesaTokenManager;
 import io.github.openpaydev.mpesa.core.MpesaConfig;
 import io.github.openpaydev.mpesa.core.MpesaEnvironment;
 import okhttp3.OkHttpClient;
